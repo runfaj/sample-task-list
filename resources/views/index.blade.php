@@ -32,6 +32,11 @@
             .task-labels {
                 color: #999;
             }
+            .little {
+                font-size: 11px;
+                font-weight: normal;
+                color: #999;
+            }
         </style>
     </head>
 

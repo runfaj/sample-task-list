@@ -36,6 +36,11 @@ class TaskController extends Controller
      */
     public function store(Request $request)
     {
+        // make sure title is defined and fits in length
+        if(strlen($request->input('title')) < 2 || strlen($request->input('title')) > 140) {
+            App::abort(400,"Title not valid");
+        }
+
         $task = new Task;
         $task->title = $request->input('title');
         $task->body = $request->input('body');
@@ -76,6 +81,11 @@ class TaskController extends Controller
      */
     public function update(Request $request, $id)
     {
+        // make sure title is defined and fits in length
+        if(strlen($request->input('title')) < 2 || strlen($request->input('title')) > 140) {
+            App::abort(400,"Title not valid");
+        }
+
         $task = Task::find($id);
         $task->title = $request->input('title');
         $task->body = $request->input('body');
