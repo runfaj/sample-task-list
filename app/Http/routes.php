@@ -19,6 +19,6 @@ Route::group(array('prefix' => 'api'), function()
 {
     Route::post('tasks/search', 'TaskController@search');
     Route::resource('tasks', 'TaskController', ['except' => [
-        'create', 'edit'
+        'create', 'edit', 'show'
     ]]);
 });

@@ -12,10 +12,6 @@ Services.factory('Task', ['$http', function($http){
             /** list all tasks **/
             return $http.get('/api/tasks');
         },
-        get: function(id) {
-            /** get a specific task by id **/
-            return $http.get('/api/tasks/'+id);
-        },
         add: function(data) {
             /** add task **/
             return $http.post('/api/tasks/', data);

@@ -38,13 +38,13 @@ class TaskController extends Controller
     {
         // make sure title is defined and fits in length
         if(strlen($request->input('title')) < 2 || strlen($request->input('title')) > 140) {
-            App::abort(400,"Title not valid");
+            abort(400,"Title not valid");
         }
 
         $task = new Task;
         $task->title = $request->input('title');
-        $task->body = $request->input('body');
-        $task->labels = $request->input('labels');
+        $task->body = null !== $request->input('body') ? $request->input('body') : $task->body;
+        $task->labels = null !== $request->input('labels') ? $request->input('labels') : $task->labels;
         $task->save();
         
         return $task->id;
@@ -58,7 +58,7 @@ class TaskController extends Controller
      */
     public function show($id)
     {
-        return Task::find($id);
+        // unused
     }
 
     /**
@@ -83,13 +83,13 @@ class TaskController extends Controller
     {
         // make sure title is defined and fits in length
         if(strlen($request->input('title')) < 2 || strlen($request->input('title')) > 140) {
-            App::abort(400,"Title not valid");
+            abort(400,"Title not valid");
         }
 
         $task = Task::find($id);
         $task->title = $request->input('title');
-        $task->body = $request->input('body');
-        $task->labels = $request->input('labels');
+        $task->body = null !== $request->input('body') ? $request->input('body') : $task->body;
+        $task->labels = null !== $request->input('labels') ? $request->input('labels') : $task->labels;
         $task->save();
         
         return $task;

@@ -6,6 +6,8 @@ use Illuminate\Foundation\Testing\DatabaseTransactions;
 
 class TaskTest extends TestCase
 {
+    use DatabaseTransactions;
+
     /**
      * Test basic listings.
      *
@@ -39,8 +41,10 @@ class TaskTest extends TestCase
         /* test additions */
 
         /* test valid addition (title is only thing needing checks) */
-        $task = $this->json('POST','/api/tasks/',['title'=>'sampletest']);
-        $task->assertResponseOk();
+        $task = $this->json('POST','/api/tasks/',['title'=>'sampletest','labels'=>'','body'=>'']);
+        $this->assertTrue(is_int(intval($task->response->getContent())));
+
+        $id = intval($task->response->getContent());
 
         /* test too short of title */
         $response = $this->json('POST','/api/tasks/',['title'=>'t']);
@@ -57,11 +61,11 @@ class TaskTest extends TestCase
         /* test updates */
 
         /* test valid update (title is only thing needing checks) */
-        $response = $this->json('POST','/api/tasks/'+$task,['title'=>'sampletestedit']);
-        $this->assertTrue(is_int($response));
+        $response = $this->json('PUT','/api/tasks/'.$id,['title'=>'sampletestedit']);
+        $response->assertResponseOk();
 
         /* test too short of title */
-        $response = $this->json('POST','/api/tasks/'+$task,['title'=>'t']);
+        $response = $this->json('PUT','/api/tasks/'.$id,['title'=>'t']);
         $response->assertResponseStatus(400);
 
         /* test too long of title */
@@ -69,7 +73,7 @@ class TaskTest extends TestCase
         for($i=0;$i<150;$i++) {
             $str .= "t";
         }
-        $response = $this->json('POST','/api/tasks/'+$task,['title'=>$str]);
+        $response = $this->json('PUT','/api/tasks/'.$id,['title'=>$str]);
         $response->assertResponseStatus(400);
     }
 
@@ -78,21 +82,14 @@ class TaskTest extends TestCase
      *
      * @return void
      */
-    public function testGetAndDelete()
+    public function testDelete()
     {
         /* get a new task */
-        $task = $this->json('POST','/api/tasks/',['title'=>'sampletest']);
-
-        /* test the get action */
-        $response = $this->json('GET','/api/tasks/'+$task);
-        $response->seeJsonStructure([
-                 '*' => [
-                     'id', 'title', 'body', 'labels'
-                 ]
-             ]);
+        $task = $this->json('POST','/api/tasks/',['title'=>'sampletest','labels'=>'','body'=>'']);
+        $id = intval($task->response->getContent());
 
         /* delete it */
-        $response = $this->json('DELETE','/api/tasks/'+$task);
+        $response = $this->json('DELETE','/api/tasks/'.$id);
         $response->assertResponseOk();
     }
 }
