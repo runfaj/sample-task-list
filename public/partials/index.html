@@ -1,0 +1,72 @@
+<nav class="navbar navbar-default">
+  <div class="container-fluid">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
+        <span class="sr-only">Toggle navigation</span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="#">Basic Tasks App</a>
+    </div>
+
+    <!-- Collect the nav links, forms, and other content for toggling -->
+    <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+      <ul class="nav navbar-nav">
+      </ul>
+      <div class="navbar-form navbar-right">
+        <button class="btn btn-default" style="margin-right:12px;" ng-click="addTask()" data-toggle="modal" data-target="#task-modal"><span class="glyphicon glyphicon-plus"></span></button>
+        <input type="text" class="form-control" placeholder="Search..." ng-model="searchTerm">
+      </div>
+    </div><!-- /.navbar-collapse -->
+  </div><!-- /.container-fluid -->
+</nav>
+
+
+
+<div class="container">
+    <div class="task-card" ng-repeat="item in tasks">
+        <div class="task-title">
+            {{ item.title }}
+            <a class="pull-right" style="margin-left: 8px;" ng-click="deleteTask($index)">
+                <span class="glyphicon glyphicon-remove"></span>
+            </a>
+            <a class="pull-right" ng-click="editTask(item)" data-toggle="modal" data-target="#task-modal">
+                <span class="glyphicon glyphicon-pencil"></span>
+            </a>
+        </div>
+        <div class="task-body">{{ item.body }}</div>
+        <div class="task-labels">{{ item.labels }}</div>
+    </div>
+</div>
+
+
+
+<!-- modal for editing individual task -->
+<div class="modal fade" id="task-modal" data-backdrop="static" tabindex="-1" role="dialog">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h4 class="modal-title">Editing Task</h4>
+      </div>
+      <div class="modal-body">
+        <div class="form-group">
+            <label>Title</label>
+            <input class="form-control" placeholder="Enter Title..." type="text" ng-model="editingTask.title">
+        </div>
+        <div class="form-group">
+            <label>Description</label>
+            <textarea class="form-control" placeholder="Enter Description..." ng-model="editingTask.body"></textarea>
+        </div>
+        <div class="form-group">
+            <label>Labels</label>
+            <input class="form-control" type="text" placeholder="label1, label2" ng-model="editingTask.labels">
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" ng-click="cancelEdit()">Cancel</button>
+        <button type="button" class="btn btn-primary" ng-click="applyEdit()" ng-disabled="editingTask.title.length < 2">Save</button>
+      </div>
+    </div><!-- /.modal-content -->
+  </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
