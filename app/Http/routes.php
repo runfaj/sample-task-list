@@ -4,17 +4,14 @@
 |--------------------------------------------------------------------------
 | Application Routes
 |--------------------------------------------------------------------------
-|
-| Here is where you can register all of the routes for an application.
-| It's a breeze. Simply tell Laravel the URIs it should respond to
-| and give it the controller to call when that URI is requested.
-|
 */
 
+/* the initial index route for angular to sit on top of */
 Route::get('/', function () {
     return view('index');
 });
 
+/* setup the api routes */
 Route::group(array('prefix' => 'api'), function()
 {
     Route::post('tasks/search', 'TaskController@search');
